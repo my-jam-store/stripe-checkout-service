@@ -52,10 +52,7 @@ async function processedLineItems(lineItems) {
 
           break
         case 'quantity':
-          if (!item[fieldsMapping[fieldMapping]]) {
-            processedItem[fieldMapping] = 1
-          }
-
+          processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]] || 1
           break
         default:
           processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]]
