@@ -1,0 +1,27 @@
+{
+  "name": "stripe-server-checkout",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "aes-js": "^3.1.2",
+    "argon2": "^0.26.2",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "stripe": "^8.39.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3",
+    "standard": "^14.3.3"
+  },
+  "optionalDependencies": {},
+  "author": {
+    "name": "Akai",
+    "url": "https://github.com/akai-z"
+  }
+}
