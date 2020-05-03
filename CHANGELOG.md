@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Shipping address allowed countries feature.
 
+### Changed
+- Session create endpoint request data structure.
+
 ### Fixed
 - Handling of line items quantity default value.
 - `now.json` indentation.

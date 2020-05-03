@@ -1,10 +1,10 @@
 const stripe = require('stripe')(process.env.STRIPE_API_SECRET_KEY, stripeOptions)
 const crypto = rootRequire('services/crypto')
 
-async function createCheckoutSession(lineItems) {
-  return stripe.checkout.sessions.create({
+async function createCheckoutSession(data) {
+  const payload = {
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
-    line_items: await processedLineItems(lineItems),
+    line_items: await processedLineItems(data.line_items),
     payment_intent_data: {
       capture_method: 'manual',
     },
@@ -13,7 +13,9 @@ async function createCheckoutSession(lineItems) {
     },
     success_url: `${process.env.DOMAIN}/${process.env.SUCCESS_URL_PATH}`,
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
-  })
+  }
+
+  return stripe.checkout.sessions.create(payload)
 }
 
 function checkoutSession(sessionId) {
