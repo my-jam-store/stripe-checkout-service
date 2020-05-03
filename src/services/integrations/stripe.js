@@ -45,15 +45,13 @@ async function processedLineItems(lineItems) {
           }
 
           break
+        case 'quantity':
+          processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]] || 1
+          break
         case 'images':
           if (typeof item[fieldsMapping[fieldMapping]] === 'string') {
             processedItem[fieldMapping] = [item[fieldsMapping[fieldMapping]]]
           }
-
-          break
-        case 'quantity':
-          processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]] || 1
-          break
         default:
           processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]]
       }
