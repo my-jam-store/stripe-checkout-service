@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Handling of line items quantity default value.
 - `now.json` indentation.
+- Handling line items multiple images.
 
 
 ## [0.1.0] - 2020-04-27
