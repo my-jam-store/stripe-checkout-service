@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Handling of line items quantity default value.
 - `now.json` indentation.
 - Handling line items multiple images.
+- Add a missing `break` statement to Stripe function `processedLineItems` `switch` statement.
 
 ## [0.1.0] - 2020-04-27
 ### Added

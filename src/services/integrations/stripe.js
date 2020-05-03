@@ -56,6 +56,7 @@ async function processedLineItems(lineItems) {
         case 'images':
           if (typeof item[fieldsMapping[fieldMapping]] === 'string') {
             processedItem[fieldMapping] = [item[fieldsMapping[fieldMapping]]]
+            break
           }
         default:
           processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]]
