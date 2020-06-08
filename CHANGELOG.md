@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Session create endpoint request data structure.
+- Rename project.
 
 ### Fixed
 - Handling of line items quantity default value.
