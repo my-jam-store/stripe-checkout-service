@@ -1,5 +1,5 @@
 {
-  "name": "stripe-server-checkout",
+  "name": "stripe-checkout-service",
   "version": "0.1.0",
   "private": true,
   "main": "index.js",

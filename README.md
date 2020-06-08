@@ -1,1 +1,1 @@
-# Stripe Server-side Checkout
+# Stripe Checkout Service (Server-side)
