@@ -1,4 +1,4 @@
-const stripe = rootRequire('services/integrations/stripe')
+const checkout = rootRequire('services/checkout')
 
 const routeName = 'session'
 
@@ -8,7 +8,7 @@ function setRoute(app, express) {
 
 async function routeHandler(req, res) {
   try {
-    const session = await stripe.createCheckoutSession(req.body)
+    const session = await checkout.createSession(req.body.line_items)
     res.send({ sessionId: session.id })
   } catch (err) {
     console.error(err)
