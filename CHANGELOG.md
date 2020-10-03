@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Shipping address allowed countries feature.
+- `gitignore` file.
 
 ### Changed
 - Session create endpoint request data structure.
