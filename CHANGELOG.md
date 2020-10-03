@@ -30,4 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release.
 
-[0.1.0]: https://github.com/my-jam-store/stripe-server-checkout/releases/tag/0.1.0
+[Unreleased]: https://github.com/my-jam-store/stripe-checkout-service/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/my-jam-store/stripe-checkout-service/releases/tag/0.1.0
