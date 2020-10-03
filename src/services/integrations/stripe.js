@@ -1,7 +1,16 @@
 const stripe = require('stripe')(process.env.STRIPE_API_SECRET_KEY, stripeOptions)
 
 async function createCheckoutSession(lineItems) {
-  const payload = {
+  const payload = checkoutSessionCreationPayload(lineItems)
+  return await stripe.checkout.sessions.create(payload)
+}
+
+async function checkoutSession(sessionId) {
+  return await stripe.checkout.sessions.retrieve(sessionId)
+}
+
+function checkoutSessionCreationPayload(lineItems) {
+  return {
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
     line_items: lineItems,
     payment_intent_data: {
@@ -13,12 +22,6 @@ async function createCheckoutSession(lineItems) {
     success_url: `${process.env.DOMAIN}/${process.env.SUCCESS_URL_PATH}`,
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
   }
-
-  return await stripe.checkout.sessions.create(payload)
-}
-
-async function checkoutSession(sessionId) {
-  return await stripe.checkout.sessions.retrieve(sessionId)
 }
 
 function stripeOptions() {
