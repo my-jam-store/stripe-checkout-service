@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump `lodash` version number to `4.17.20`.
 - Rename routes.
 - Refactor routes.
+- Move Stripe module line items data processing code to a separate module and refactor code accordingly.
 
 ### Fixed
 - Handling of line items quantity default value.
