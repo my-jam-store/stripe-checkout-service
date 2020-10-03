@@ -1,4 +1,4 @@
-const routeName = 'create-session'
+const routeName = 'session'
 let stripe
 
 function setRoute(app, stripeObject) {

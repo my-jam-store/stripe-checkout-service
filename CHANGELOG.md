@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Session create endpoint request data structure.
 - Rename project.
 - Bump `lodash` version number to `4.17.20`.
+- Rename routes.
 
 ### Fixed
 - Handling of line items quantity default value.
