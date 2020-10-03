@@ -15,11 +15,11 @@ async function createCheckoutSession(data) {
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
   }
 
-  return stripe.checkout.sessions.create(payload)
+  return await stripe.checkout.sessions.create(payload)
 }
 
-function checkoutSession(sessionId) {
-  return stripe.checkout.sessions.retrieve(sessionId)
+async function checkoutSession(sessionId) {
+  return await stripe.checkout.sessions.retrieve(sessionId)
 }
 
 async function processedLineItems(lineItems) {
