@@ -8,11 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Shipping address allowed countries feature.
 - `gitignore` file.
+- Add error logging to routes.
 
 ### Changed
 - Session create endpoint request data structure.
 - Rename project.
 - Bump `lodash` version number to `4.17.20`.
+- Rename routes.
+- Refactor routes.
 
 ### Fixed
 - Handling of line items quantity default value.

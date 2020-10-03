@@ -1,9 +1,9 @@
-const routeName = 'get-session'
-let stripe
+const stripe = rootRequire('services/integrations/stripe')
 
-function setRoute(app, stripeObject) {
-  stripe = stripeObject
-  app.get(`/${routeName}`, routeHandler)
+const routeName = 'session'
+
+function setRoute(app, express) {
+  app.get(`/${routeName}`, express.json(), routeHandler)
 }
 
 async function routeHandler(req, res) {
@@ -13,6 +13,7 @@ async function routeHandler(req, res) {
     const session = await stripe.checkoutSession(session_id)
     res.send(session)
   } catch (err) {
+    console.error(err)
     res.status(500).send('An error has occurred. Please contact the website administrator.')
   }
 }
