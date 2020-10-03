@@ -1,10 +1,11 @@
-const routeName = 'session'
-let stripe
+const stripe = rootRequire('services/integrations/stripe')
 
-function setRoute(app, stripeObject) {
-  stripe = stripeObject
-  app.post(`/${routeName}`, routeHandler)
+const routeName = 'session'
+
+function setRoute(app, express) {
+  app.post(`/${routeName}`, express.json(), routeHandler)
 }
+
 
 async function routeHandler(req, res) {
   try {
