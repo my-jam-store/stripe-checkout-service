@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename checkout lines items `id` field to `product_id`.
 - Refactor checkout line items amount functions.
 - Enable promotion codes feature.
+- Bump `argon2` version number to `0.27.0`.
 
 ### Removed
 - Checkout line items data validation.
