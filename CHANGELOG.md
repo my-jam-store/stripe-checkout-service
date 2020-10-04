@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace checkout line items amount `code` field with encrypted amount field.
 - Rename checkout lines items `id` field to `product_id`.
 - Refactor checkout line items amount functions.
+- Enable promotion codes feature.
 
 ### Removed
 - Checkout line items data validation.
