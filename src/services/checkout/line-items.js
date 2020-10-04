@@ -20,7 +20,7 @@ async function processedLineItems(lineItems) {
 async function lineItemAmount(amount, productId = null) {
   switch (process.env.AMOUNT_MANIPULATION_PROTECTION_TYPE) {
     case 'encryption':
-      if (typeOf(amount) === 'string' && !Number(amount)) {
+      if (!Number(amount)) {
         amount = await encryptedLineItemAmount(amount, productId)
       }
 
