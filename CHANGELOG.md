@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Checkout line items data validation.
+- Checkout line items fields mapping.
 
 ## [0.2.0] - 2020-10-04
 ### Added

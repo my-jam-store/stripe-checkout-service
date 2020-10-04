@@ -1,44 +1,15 @@
 const crypto = rootRequire('services/crypto')
 
 async function processedLineItems(lineItems) {
-  const fieldsMapping = customFieldsMapping()
   const processedItems = []
   let processedItem
-  let amount
-  let item
 
   for (const lineItem in lineItems) {
-    item = lineItems[lineItem]
-    processedItem = { "currency": process.env.CURRENCY }
+    processedItem = lineItems[lineItem]
+    processedItem.currency = process.env.CURRENCY
+    processedItem.amount = await lineItemAmount(processedItem.amount, processedItem.product_id)
 
-    for (const fieldMapping in fieldsMapping) {
-      switch (fieldMapping) {
-        case 'product_id':
-          break
-        case 'code':
-        case 'amount':
-          amount = await lineItemAmount(
-            item[fieldsMapping[fieldMapping]].amount,
-            item[fieldsMapping[fieldMapping]].product_id
-          )
-
-          if (amount) {
-            processedItem.amount = amount
-          }
-
-          break
-        case 'quantity':
-          processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]] || 1
-          break
-        case 'images':
-          if (typeof item[fieldsMapping[fieldMapping]] === 'string') {
-            processedItem[fieldMapping] = [item[fieldsMapping[fieldMapping]]]
-            break
-          }
-        default:
-          processedItem[fieldMapping] = item[fieldsMapping[fieldMapping]]
-      }
-    }
+    delete processedItem.product_id
 
     processedItems.push(processedItem)
   }
@@ -62,23 +33,11 @@ async function lineItemAmount(amount, productId = null) {
 async function encryptedLineItemAmount(amount, productId) {
   amount = JSON.parse(await crypto.decrypt(amount))
 
-  if (amount[fieldsMapping.product_id] !== productId) {
+  if (amount['product_id'] !== productId) {
     throw new Error(`Item "${productId}" amount is invalid.`)
   }
 
-  return amount[fieldsMapping.amount]
-}
-
-function customFieldsMapping() {
-  return {
-    "product_id": "product_id",
-    "code": "code",
-    "name": "name",
-    "description": "description",
-    "images": "image",
-    "quantity": "quantity",
-    "amount": "price"
-  }
+  return amount['amount']
 }
 
 module.exports = {
