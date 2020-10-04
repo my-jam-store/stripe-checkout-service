@@ -13,7 +13,7 @@ async function processedLineItems(lineItems) {
 
     for (const fieldMapping in fieldsMapping) {
       switch (fieldMapping) {
-        case 'id':
+        case 'product_id':
           break
         case 'code':
         case 'amount':
@@ -67,8 +67,8 @@ async function lineItemAmount(lineItem, fieldsMapping, field) {
 async function encryptedLineItemAmount(lineItem, fieldsMapping) {
   const amount = JSON.parse(await crypto.decrypt(lineItem[fieldsMapping.amount]))
 
-  if (amount[fieldsMapping.id] !== lineItem[fieldsMapping.id]) {
-    throw new Error(`Item "${lineItem[fieldsMapping.id]}" amount is invalid.`)
+  if (amount[fieldsMapping.product_id] !== lineItem[fieldsMapping.product_id]) {
+    throw new Error(`Item "${lineItem[fieldsMapping.product_id]}" amount is invalid.`)
   }
 
   return amount[fieldsMapping.amount]
@@ -76,7 +76,7 @@ async function encryptedLineItemAmount(lineItem, fieldsMapping) {
 
 function customFieldsMapping() {
   return {
-    "id": "id",
+    "product_id": "product_id",
     "code": "code",
     "name": "name",
     "description": "description",
