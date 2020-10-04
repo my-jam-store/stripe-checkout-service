@@ -19,6 +19,7 @@ function checkoutSessionCreationPayload(lineItems) {
     shipping_address_collection: {
       allowed_countries: process.env.SHIPPING_ADDRESS_ALLOWED_COUNTRIES.split(',')
     },
+    allow_promotion_codes: true,
     success_url: `${process.env.DOMAIN}/${process.env.SUCCESS_URL_PATH}`,
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
   }
