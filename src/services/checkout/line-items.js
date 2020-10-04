@@ -52,7 +52,7 @@ async function lineItemAmount(lineItem, fieldsMapping, field) {
 
   switch (process.env.AMOUNT_MANIPULATION_PROTECTION_TYPE) {
     case 'encryption':
-      if (field === 'code') {
+      if (typeOf(lineItem[fieldsMapping.amount]) === 'string' && !Number(lineItem[fieldsMapping.amount])) {
         amount = await encryptedLineItemAmount(lineItem, fieldsMapping)
       }
 
@@ -65,13 +65,13 @@ async function lineItemAmount(lineItem, fieldsMapping, field) {
 }
 
 async function encryptedLineItemAmount(lineItem, fieldsMapping) {
-  const code = JSON.parse(await crypto.decrypt(lineItem[fieldsMapping.code]))
+  const amount = JSON.parse(await crypto.decrypt(lineItem[fieldsMapping.amount]))
 
-  if (code[fieldsMapping.id] !== lineItem[fieldsMapping.id]) {
-    throw new Error(`Item "${lineItem[fieldsMapping.id]}" code is invalid.`)
+  if (amount[fieldsMapping.id] !== lineItem[fieldsMapping.id]) {
+    throw new Error(`Item "${lineItem[fieldsMapping.id]}" amount is invalid.`)
   }
 
-  return code[fieldsMapping.amount]
+  return amount[fieldsMapping.amount]
 }
 
 function customFieldsMapping() {
