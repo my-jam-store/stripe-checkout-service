@@ -14,7 +14,7 @@ function checkoutSessionCreationPayload(lineItems) {
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
     line_items: lineItems,
     payment_intent_data: {
-      capture_method: 'manual',
+      capture_method: process.env.PAYMENT_INTENT_CAPTURE_METHOD || 'automatic',
     },
     shipping_address_collection: {
       allowed_countries: process.env.SHIPPING_ADDRESS_ALLOWED_COUNTRIES.split(',')

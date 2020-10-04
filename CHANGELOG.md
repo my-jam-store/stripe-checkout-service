@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - An environment variable to enable/disable promotion codes.
+- An environment variable to change Payment Intent capture method.
 
 ## [0.3.0] - 2020-10-05
 ### Added
