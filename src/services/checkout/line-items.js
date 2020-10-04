@@ -1,18 +1,25 @@
+const shipping = rootRequire('services/checkout/shipping')
 const crypto = rootRequire('services/crypto')
 
 async function processedLineItems(lineItems) {
   const processedItems = []
   let processedItem
+  let subtotal = 0
 
   for (const lineItem in lineItems) {
     processedItem = lineItems[lineItem]
     processedItem.currency = process.env.CURRENCY
     processedItem.amount = await lineItemAmount(processedItem.amount, processedItem.product_id)
 
+    subtotal += processedItem.amount
+    processedItem.amount *= 100
+
     delete processedItem.product_id
 
     processedItems.push(processedItem)
   }
+
+  processedItems.push(shippingLineItem(subtotal))
 
   return processedItems
 }
@@ -27,7 +34,7 @@ async function lineItemAmount(amount, productId = null) {
       break
   }
 
-  return amount * 100
+  return amount
 }
 
 async function encryptedLineItemAmount(amount, productId) {
@@ -38,6 +45,15 @@ async function encryptedLineItemAmount(amount, productId) {
   }
 
   return amount['amount']
+}
+
+function shippingLineItem(subtotal) {
+  return {
+    "name": "Shipping Fee",
+    "currency": process.env.CURRENCY,
+    "amount": shipping.amount(subtotal),
+    "quantity": 1
+  }
 }
 
 module.exports = {
