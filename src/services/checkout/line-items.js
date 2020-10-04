@@ -18,9 +18,8 @@ async function processedLineItems(lineItems) {
         case 'code':
         case 'amount':
           amount = await lineItemAmount(
-            item,
-            fieldsMapping,
-            fieldMapping
+            item[fieldsMapping[fieldMapping]].amount,
+            item[fieldsMapping[fieldMapping]].product_id
           )
 
           if (amount) {
@@ -47,28 +46,24 @@ async function processedLineItems(lineItems) {
   return processedItems
 }
 
-async function lineItemAmount(lineItem, fieldsMapping, field) {
-  let amount = null
-
+async function lineItemAmount(amount, productId = null) {
   switch (process.env.AMOUNT_MANIPULATION_PROTECTION_TYPE) {
     case 'encryption':
-      if (typeOf(lineItem[fieldsMapping.amount]) === 'string' && !Number(lineItem[fieldsMapping.amount])) {
-        amount = await encryptedLineItemAmount(lineItem, fieldsMapping)
+      if (typeOf(amount) === 'string' && !Number(amount)) {
+        amount = await encryptedLineItemAmount(amount, productId)
       }
 
       break
-    default:
-      amount = lineItem[fieldsMapping.amount]
   }
 
   return amount * 100
 }
 
-async function encryptedLineItemAmount(lineItem, fieldsMapping) {
-  const amount = JSON.parse(await crypto.decrypt(lineItem[fieldsMapping.amount]))
+async function encryptedLineItemAmount(amount, productId) {
+  amount = JSON.parse(await crypto.decrypt(amount))
 
-  if (amount[fieldsMapping.product_id] !== lineItem[fieldsMapping.product_id]) {
-    throw new Error(`Item "${lineItem[fieldsMapping.product_id]}" amount is invalid.`)
+  if (amount[fieldsMapping.product_id] !== productId) {
+    throw new Error(`Item "${productId}" amount is invalid.`)
   }
 
   return amount[fieldsMapping.amount]
