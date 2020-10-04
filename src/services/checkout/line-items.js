@@ -49,10 +49,10 @@ async function encryptedLineItemAmount(amount, productId) {
 
 function shippingLineItem(subtotal) {
   return {
-    "name": "Shipping Fee",
-    "currency": process.env.CURRENCY,
-    "amount": shipping.amount(subtotal),
-    "quantity": 1
+    name: 'Shipping Fee',
+    currency: process.env.CURRENCY,
+    amount: shipping.amount(subtotal),
+    quantity: 1
   }
 }
 

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An environment variable to enable/disable promotion codes.
 - An environment variable to change Payment Intent capture method.
 
+### Removed
+- Properties quotes from shipping line item object.
+
 ## [0.3.0] - 2020-10-05
 ### Added
 - Shipping fee feature.
