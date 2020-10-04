@@ -48,7 +48,11 @@ function ctr(key, ctrCounter) {
 }
 
 async function ctrKey(salt) {
-  const hashSettings = {
+  return await argon2.hash(process.env.CRYPTO_PASSWORD, hashSettings(salt))
+}
+
+function hashSettings(salt) {
+  return {
     type: argon2.argon2di,
     raw: true,
     timeCost: 8,
@@ -57,8 +61,6 @@ async function ctrKey(salt) {
     hashLength: 32,
     salt: salt
   }
-
-  return await argon2.hash(process.env.CRYPTO_PASSWORD, hashSettings)
 }
 
 module.exports = {
