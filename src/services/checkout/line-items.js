@@ -41,7 +41,6 @@ async function processedLineItems(lineItems) {
       }
     }
 
-    validateRequiredLineItemFields(processedItem)
     processedItems.push(processedItem)
   }
 
@@ -66,14 +65,6 @@ async function lineItemAmount(lineItem, fieldsMapping, field) {
 }
 
 async function encryptedLineItemAmount(lineItem, fieldsMapping) {
-  validateIdField(lineItem, fieldsMapping.id)
-
-  if (!lineItem[fieldsMapping.code]) {
-    throw new Error(
-      `Field "${fieldsMapping.code}" is missing in one of the items.`
-    )
-  }
-
   const code = JSON.parse(await crypto.decrypt(lineItem[fieldsMapping.code]))
 
   if (code[fieldsMapping.id] !== lineItem[fieldsMapping.id]) {
@@ -81,24 +72,6 @@ async function encryptedLineItemAmount(lineItem, fieldsMapping) {
   }
 
   return code[fieldsMapping.amount]
-}
-
-function validateRequiredLineItemFields(lineItem) {
-  requiredLineItemFields().forEach(requiredField => {
-    if (!lineItem[requiredField]) {
-      throw new Error(
-        `Field "${requiredField}" is missing in one of the items.`
-      )
-    }
-  })
-}
-
-function validateIdField(lineItem, idField) {
-  if (!lineItem[idField]) {
-    throw new Error(
-      `Field "${idField}" is missing in one of the items.`
-    )
-  }
 }
 
 function customFieldsMapping() {
@@ -111,13 +84,6 @@ function customFieldsMapping() {
     "quantity": "quantity",
     "amount": "price"
   }
-}
-
-function requiredLineItemFields() {
-  return [
-    'name',
-    'amount'
-  ]
 }
 
 module.exports = {
