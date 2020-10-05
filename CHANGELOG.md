@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Stripe webhooks functions.
 - Data expansion feature to Stripe `checkoutSession` function.
 - Stripe checkout session creation `mode` to payload data.
+- Airtable module.
 
 ### Changed
 - Replace checkout line items deprecated data parameters with `price_data`.
