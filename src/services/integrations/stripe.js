@@ -9,6 +9,10 @@ async function checkoutSession(sessionId) {
   return await stripe.checkout.sessions.retrieve(sessionId)
 }
 
+async function promotionCode(promotionId) {
+  return await stripe.promotionCodes.retrieve(promotionId)
+}
+
 function checkoutSessionCreationPayload(lineItems) {
   return {
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
@@ -41,5 +45,6 @@ function stripeOptions() {
 
 module.exports = {
   createCheckoutSession,
-  checkoutSession
+  checkoutSession,
+  promotionCode
 }
