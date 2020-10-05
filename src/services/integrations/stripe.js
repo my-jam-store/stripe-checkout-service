@@ -25,6 +25,7 @@ function webhookEventData(event) {
 
 function checkoutSessionCreationPayload(lineItems) {
   return {
+    mode: process.env.CHECKOUT_SESSION_MODE || 'payment',
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
     line_items: lineItems,
     payment_intent_data: {
