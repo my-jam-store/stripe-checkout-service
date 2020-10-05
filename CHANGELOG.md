@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Airtable module.
 - Order module.
 - Order creation Stripe webhook route.
+- Airtable JS library version `0.10.0`.
 
 ### Changed
 - Replace checkout line items deprecated data parameters with `price_data`.
