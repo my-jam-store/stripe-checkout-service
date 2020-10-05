@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Stripe promotion code function.
+- Stripe webhooks functions.
 
 ### Changed
 - Replace checkout line items deprecated data parameters with `price_data`.
