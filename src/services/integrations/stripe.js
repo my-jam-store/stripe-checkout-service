@@ -7,8 +7,8 @@ async function createCheckoutSession(lineItems) {
   return await stripe.checkout.sessions.create(payload)
 }
 
-async function checkoutSession(sessionId) {
-  return await stripe.checkout.sessions.retrieve(sessionId)
+async function checkoutSession(sessionId, expandedData = []) {
+  return await stripe.checkout.sessions.retrieve(sessionId, { expand: expandedData })
 }
 
 async function promotionCode(promotionId) {
