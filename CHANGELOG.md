@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Stripe checkout session creation `mode` to payload data.
 - Airtable module.
 - Order module.
+- Order creation Stripe webhook route.
 
 ### Changed
 - Replace checkout line items deprecated data parameters with `price_data`.
