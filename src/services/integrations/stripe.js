@@ -1,12 +1,26 @@
 const stripe = require('stripe')(process.env.STRIPE_API_SECRET_KEY, stripeOptions)
 
+const webhookSignatureHeader = 'stripe-signature'
+
 async function createCheckoutSession(lineItems) {
   const payload = checkoutSessionCreationPayload(lineItems)
   return await stripe.checkout.sessions.create(payload)
 }
 
-async function checkoutSession(sessionId) {
-  return await stripe.checkout.sessions.retrieve(sessionId)
+async function checkoutSession(sessionId, expandedData = []) {
+  return await stripe.checkout.sessions.retrieve(sessionId, { expand: expandedData })
+}
+
+async function promotionCode(promotionId) {
+  return await stripe.promotionCodes.retrieve(promotionId)
+}
+
+function constructWebhookEvent(payload, payloadHeaders, secret) {
+  return stripe.webhooks.constructEvent(payload, payloadHeaders[webhookSignatureHeader], secret)
+}
+
+function webhookEventData(event) {
+  return event.data.object
 }
 
 function checkoutSessionCreationPayload(lineItems) {
@@ -41,5 +55,8 @@ function stripeOptions() {
 
 module.exports = {
   createCheckoutSession,
-  checkoutSession
+  checkoutSession,
+  promotionCode,
+  constructWebhookEvent,
+  webhookEventData
 }
