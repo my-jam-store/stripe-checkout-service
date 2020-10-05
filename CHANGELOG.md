@@ -12,9 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Refactor crypto module `ctrKey` function.
 
-### Removed
-- Properties quotes from shipping line item object.
-
 ## [0.3.0] - 2020-10-05
 ### Added
 - Shipping fee feature.
