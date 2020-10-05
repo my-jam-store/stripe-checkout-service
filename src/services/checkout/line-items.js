@@ -8,11 +8,15 @@ async function processedLineItems(lineItems) {
 
   for (const lineItem in lineItems) {
     processedItem = lineItems[lineItem]
-    processedItem.currency = process.env.CURRENCY
-    processedItem.amount = await lineItemAmount(processedItem.amount, processedItem.product_id)
+    processedItem.price_data.currency = process.env.CURRENCY
 
-    subtotal += processedItem.amount
-    processedItem.amount *= 100
+    processedItem.price_data.unit_amount = await lineItemAmount(
+      processedItem.price_data.unit_amount,
+      processedItem.product_id
+    )
+
+    subtotal += processedItem.price_data.unit_amount
+    processedItem.price_data.unit_amount *= 100
 
     delete processedItem.product_id
 
