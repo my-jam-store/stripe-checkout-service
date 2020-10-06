@@ -11,22 +11,8 @@ async function create(checkoutSessionId) {
   const data = await orderData(checkoutSession.payment_intent, promotionCode)
   const items = await lineItems(checkoutSession.line_items.data)
 
-  await airtable.createRecord(
-    process.env.AIRTABLE_ORDER_VIEW,
-    data,
-    async (err, record) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-
-      items.forEach(item => {
-        item.fields['order_id'] = [ record.id ]
-      })
-
-      await addItems(items)
-    }
-  )
+  const order = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, data)
+  await addItems(items, order.id)
 }
 
 async function orderData(paymentIntent, promotionCodeId = null) {
@@ -73,7 +59,11 @@ async function lineItems(items) {
   return lineItems
 }
 
-async function addItems(items) {
+async function addItems(items, orderId) {
+  items.forEach(item => {
+    item.fields['order_id'] = [ orderId ]
+  })
+
   await airtable.createRecord(process.env.AIRTABLE_ORDER_ITEMS_VIEW, items)
 }
 
