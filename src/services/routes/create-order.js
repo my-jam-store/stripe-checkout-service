@@ -7,7 +7,7 @@ function setRoute(app, express) {
   app.post(`/${routeName}`, express.raw({ type: "application/json" }), routeHandler)
 }
 
-function routeHandler(req, res) {
+async function routeHandler(req, res) {
   let event
 
   try {
@@ -27,7 +27,7 @@ function routeHandler(req, res) {
 
   try {
     const checkoutSession = stripe.webhookEventData(event)
-    order.create(checkoutSession.id)
+    await order.create(checkoutSession.id)
 
     res.sendStatus(200)
   } catch (err) {
