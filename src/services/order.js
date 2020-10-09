@@ -9,7 +9,7 @@ async function create(checkoutSessionId) {
     : null
 
   const data = await orderData(checkoutSession.payment_intent, promotionCode)
-  const items = await lineItems(checkoutSession.line_items.data)
+  const items = lineItems(checkoutSession.line_items.data)
 
   const order = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, data)
   await addItems(items, order.id)
@@ -34,7 +34,7 @@ async function orderData(paymentIntent, promotionCodeId = null) {
   }
 }
 
-async function lineItems(items) {
+function lineItems(items) {
   const lineItems = []
   let product
 
