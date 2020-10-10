@@ -8,8 +8,9 @@ async function create(checkoutSessionId) {
     ? checkoutSession.total_details.breakdown.discounts[0].discount.promotion_code
     : null
 
-  const data = await orderData(checkoutSession.payment_intent, promotionCode)
+  const orderDataPromise = orderData(checkoutSession.payment_intent, promotionCode)
   const items = lineItems(checkoutSession.line_items.data)
+  const data = await orderDataPromise
 
   const order = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, data)
   await addItems(items, order.id)
