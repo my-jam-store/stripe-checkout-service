@@ -9,10 +9,10 @@ async function createRecord(table, data) {
   }
 
   const chunks = bulkActionRecordsChunks(data)
-  const baseTable = base(table)
+  table = base(table)
 
   for (let i = 0; i < chunks.length; i++) {
-    await baseTable.create(chunks[i])
+    await table.create(chunks[i])
 
     if (chunks[i + 1]) {
       await setBulkActionChunkDelay()
