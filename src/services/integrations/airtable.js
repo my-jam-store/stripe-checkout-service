@@ -36,9 +36,7 @@ function isBulkActionRecordsAboveLimit(data) {
 }
 
 function setBulkActionChunkDelay() {
-  return new Promise(resolve => {
-    setTimeout(resolve, bulkActionChunkDelay)
-  })
+  return new Promise(resolve => { setTimeout(resolve, bulkActionChunkDelay) })
 }
 
 function base(table) {
