@@ -2,12 +2,6 @@ const airtable = require('airtable')
 
 const bulkActionRecordsLimit = 10
 const bulkActionChunkDelay = 1000 // In milliseconds.
-const base = baseInit()
-
-function baseInit() {
-  return new airtable({ apiKey: process.env.AIRTABLE_API_KEY })
-    .base(process.env.AIRTABLE_BASE_ID)
-}
 
 async function createRecord(table, data) {
   if (!isBulkActionRecordsAboveLimit(data)) {
@@ -44,6 +38,10 @@ function setBulkActionChunkDelay() {
   return new Promise(resolve => {
     setTimeout(resolve, bulkActionChunkDelay)
   })
+}
+
+function base(table) {
+  return airtable.base(process.env.AIRTABLE_BASE_ID)(table)
 }
 
 module.exports = {
