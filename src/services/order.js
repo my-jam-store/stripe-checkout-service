@@ -3,12 +3,13 @@ const airtable = rootRequire('services/integrations/airtable')
 
 async function create(checkoutSessionId) {
   const checkoutSession = await stripe.checkoutSession(checkoutSessionId, checkoutSessionExpandedData())
+  const phone = checkoutSession.metadata.phone
 
   const promotionCode = checkoutSession.total_details.breakdown.discounts.length
     ? checkoutSession.total_details.breakdown.discounts[0].discount.promotion_code
     : null
 
-  const orderDataPromise = orderData(checkoutSession.payment_intent, promotionCode)
+  const orderDataPromise = orderData(checkoutSession.payment_intent, promotionCode, phone)
   const items = lineItems(checkoutSession.line_items.data)
   const data = await orderDataPromise
 
@@ -16,7 +17,7 @@ async function create(checkoutSessionId) {
   await addItems(items, order.id)
 }
 
-async function orderData(paymentIntent, promotionCodeId = null) {
+async function orderData(paymentIntent, promotionCodeId = null, phone = null) {
   const chargesData = paymentIntent.charges.data[0]
   const billing = paymentIntent.shipping || chargesData.billing_details
   const promotionCode = promotionCodeId ? await stripe.promotionCode(promotionCodeId) : null
@@ -31,7 +32,7 @@ async function orderData(paymentIntent, promotionCodeId = null) {
     address: [billing.address.line1, billing.address.line2].filter(Boolean).join(' - '),
     post_code: billing.address.postal_code,
     city: billing.address.city,
-    phone_number: billing.phone
+    phone_number: phone || billing.phone
   }
 }
 
