@@ -2,8 +2,8 @@ const stripe = require('stripe')(process.env.STRIPE_API_SECRET_KEY, stripeOption
 
 const webhookSignatureHeader = 'stripe-signature'
 
-async function createCheckoutSession(lineItems) {
-  const payload = checkoutSessionCreationPayload(lineItems)
+async function createCheckoutSession(lineItems, metadata = {}) {
+  const payload = checkoutSessionCreationPayload(lineItems, metadata)
   return await stripe.checkout.sessions.create(payload)
 }
 
@@ -23,7 +23,7 @@ function webhookEventData(event) {
   return event.data.object
 }
 
-function checkoutSessionCreationPayload(lineItems) {
+function checkoutSessionCreationPayload(lineItems, metadata = {}) {
   return {
     mode: process.env.CHECKOUT_SESSION_MODE || 'payment',
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
@@ -35,6 +35,7 @@ function checkoutSessionCreationPayload(lineItems) {
       allowed_countries: process.env.SHIPPING_ADDRESS_ALLOWED_COUNTRIES.split(',')
     },
     allow_promotion_codes: process.env.ALLOW_PROMOTION_CODES || false,
+    metadata: metadata || {},
     success_url: `${process.env.DOMAIN}/${process.env.SUCCESS_URL_PATH}`,
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
   }

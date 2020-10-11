@@ -8,7 +8,7 @@ function setRoute(app, express) {
 
 async function routeHandler(req, res) {
   try {
-    const session = await checkout.createSession(req.body.line_items)
+    const session = await checkout.createSession(req.body.line_items, req.body.metadata)
     res.send({ sessionId: session.id })
   } catch (err) {
     console.error(err)
