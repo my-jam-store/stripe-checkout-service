@@ -4,7 +4,7 @@ const order = rootRequire('services/order')
 const routeName = 'order'
 
 function setRoute(app, express) {
-  app.post(`/${routeName}`, express.raw({ type: "application/json" }), routeHandler)
+  app.post(`/${routeName}`, express.raw({ type: 'application/json' }), routeHandler)
 }
 
 async function routeHandler(req, res) {
