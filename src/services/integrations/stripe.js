@@ -16,6 +16,17 @@ async function promotionCode(promotionId) {
   return await stripe.promotionCodes.retrieve(promotionId)
 }
 
+function completedCheckoutSession(payload, payloadHeaders) {
+  const event = webhookEvent(
+    payload,
+    payloadHeaders,
+    process.env.STRIPE_ORDER_CREATE_WEBHOOK_SECRET,
+    'checkout.session.completed'
+  )
+
+  return webhookEventData(event)
+}
+
 function webhookEvent(payload, payloadHeaders, secret, eventTypes) {
   try {
     const event = constructWebhookEvent(payload, payloadHeaders, secret)
@@ -79,6 +90,7 @@ module.exports = {
   createCheckoutSession,
   checkoutSession,
   promotionCode,
+  completedCheckoutSession,
   constructWebhookEvent,
   webhookEventData
 }
