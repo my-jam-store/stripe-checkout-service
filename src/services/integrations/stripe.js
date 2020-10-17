@@ -20,7 +20,7 @@ function completedCheckoutSession(payload, payloadHeaders) {
   const event = webhookEvent(
     payload,
     payloadHeaders,
-    process.env.STRIPE_ORDER_CREATE_WEBHOOK_SECRET,
+    process.env.STRIPE_CHECKOUT_SESSION_COMPLETED_WEBHOOK_SECRET,
     'checkout.session.completed'
   )
 
