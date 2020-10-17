@@ -8,29 +8,16 @@ function setRoute(app, express) {
 }
 
 async function routeHandler(req, res) {
-  let event
-
   try {
-    event = stripe.constructWebhookEvent(
-      req.body,
-      req.headers,
-      process.env.STRIPE_ORDER_CREATE_WEBHOOK_SECRET
-    )
-
-    if (event.type !== 'checkout.session.completed') {
-      return res.sendStatus(403)
-    }
-  } catch (err) {
-    console.error(err)
-    return res.status(400).send('Webhook signature verification failed.')
-  }
-
-  try {
-    const checkoutSession = stripe.webhookEventData(event)
+    const checkoutSession = stripe.completedCheckoutSession(req.body, req.headers)
     await order.create(checkoutSession.id)
 
     res.sendStatus(200)
   } catch (err) {
+    if (err.name === 'HttpError') {
+      return res.status(err.code).send(err.message)
+    }
+
     console.error(err)
     res.sendStatus(500)
   }
