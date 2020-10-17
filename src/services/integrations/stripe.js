@@ -90,7 +90,5 @@ module.exports = {
   createCheckoutSession,
   checkoutSession,
   promotionCode,
-  completedCheckoutSession,
-  constructWebhookEvent,
-  webhookEventData
+  completedCheckoutSession
 }
