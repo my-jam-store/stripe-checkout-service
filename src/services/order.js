@@ -2,6 +2,10 @@ const stripe = rootRequire('services/integrations/stripe')
 const airtable = rootRequire('services/integrations/airtable')
 
 async function create(checkoutSessionId) {
+  if (process.env.ORDER_CREATE_ENABLED !== 'true') {
+    return
+  }
+
   const checkoutSession = await stripe.checkoutSession(checkoutSessionId, checkoutSessionExpandedData())
   const phone = checkoutSession.metadata.phone
 
