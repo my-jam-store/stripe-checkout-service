@@ -1,5 +1,6 @@
 const stripe = rootRequire('services/integrations/stripe')
 const order = rootRequire('services/order')
+const HttpError = rootRequire('services/error/http')
 
 const routeName = 'order'
 
@@ -14,7 +15,7 @@ async function routeHandler(req, res) {
 
     res.sendStatus(200)
   } catch (err) {
-    if (err.name === 'HttpError') {
+    if (err instanceof HttpError) {
       return res.status(err.code).send(err.message)
     }
 
