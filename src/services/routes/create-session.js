@@ -1,4 +1,4 @@
-const checkout = rootRequire('services/checkout')
+const checkoutSession = rootRequire('services/checkout/session')
 
 const routeName = 'session'
 
@@ -8,7 +8,7 @@ function setRoute(app, express) {
 
 async function routeHandler(req, res) {
   try {
-    const session = await checkout.createSession(req.body.line_items, req.body.metadata)
+    const session = await checkoutSession.create(req.body.line_items, req.body.metadata)
     res.send({ sessionId: session.id })
   } catch (err) {
     console.error(err)
