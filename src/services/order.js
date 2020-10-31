@@ -1,38 +1,33 @@
-const stripe = rootRequire('services/integrations/stripe')
 const airtable = rootRequire('services/integrations/airtable')
+const checkoutSession = rootRequire('services/checkout/session')
 
 async function create(checkoutSessionId) {
   if (process.env.ORDER_CREATE_ENABLED !== 'true') {
     return
   }
 
-  const checkoutSession = await stripe.checkoutSession(checkoutSessionId, checkoutSessionExpandedData())
-  const phone = checkoutSession.metadata.phone
+  const checkout = await checkoutSession.get(checkoutSessionId)
 
-  const promotionCode = checkoutSession.total_details.breakdown.discounts.length
-    ? checkoutSession.total_details.breakdown.discounts[0].discount.promotion_code
-    : null
+  const promotionCodePromise = checkout.promotionCode()
+  const items = lineItems(checkout.line_items.data)
+  const promotionCode = await promotionCodePromise
 
-  const orderDataPromise = orderData(checkoutSession.payment_intent, promotionCode, phone)
-  const items = lineItems(checkoutSession.line_items.data)
-  const data = await orderDataPromise
-
+  const data = orderData(checkout.payment_intent, checkout.charges, promotionCode, checkout.phone)
   const order = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, data)
+
   await addItems(items, order.id)
 }
 
-async function orderData(paymentIntent, promotionCodeId = null, phone = null) {
-  const chargesData = paymentIntent.charges.data[0]
-  const billing = paymentIntent.shipping || chargesData.billing_details
-  const promotionCode = promotionCodeId ? await stripe.promotionCode(promotionCodeId) : null
+function orderData(paymentIntent, charges, promotionCode = null, phone = null) {
+  const billing = paymentIntent.shipping || charges.billing_details
 
   return data = {
     payment_intent_id: paymentIntent.id,
     customer_name: billing.name,
-    email: chargesData.billing_details.email,
-    coupon_code: promotionCode ? promotionCode.code : '',
+    email: charges.billing_details.email,
+    coupon_code: promotionCode || '',
     total: parseFloat((paymentIntent.amount / 100).toFixed(2)),
-    date: new Date(chargesData.created * 1000).toISOString(),
+    date: new Date(charges.created * 1000).toISOString(),
     address: [billing.address.line1, billing.address.line2].filter(Boolean).join(' - '),
     post_code: billing.address.postal_code,
     city: billing.address.city,
@@ -71,14 +66,6 @@ async function addItems(items, orderId) {
   })
 
   await airtable.createRecord(process.env.AIRTABLE_ORDER_ITEMS_VIEW, items)
-}
-
-function checkoutSessionExpandedData() {
-  return [
-    'line_items.data.price.product',
-    'payment_intent',
-    'total_details.breakdown.discounts'
-  ]
 }
 
 module.exports = {
