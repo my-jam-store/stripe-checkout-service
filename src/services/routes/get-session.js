@@ -1,12 +1,9 @@
 const stripe = rootRequire('services/integrations/stripe')
 
-const routeName = 'session'
+exports.name = 'session'
+exports.httpMethod = 'get'
 
-function setRoute(app, express) {
-  app.get(`/${routeName}`, express.json(), routeHandler)
-}
-
-async function routeHandler(req, res) {
+exports.action = async (req, res) => {
   const { session_id } = req.query
 
   try {
@@ -16,8 +13,4 @@ async function routeHandler(req, res) {
     console.error(err)
     res.status(500).send('An error has occurred. Please contact the website administrator.')
   }
-}
-
-module.exports = {
-  setRoute
 }
