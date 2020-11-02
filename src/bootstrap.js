@@ -1,9 +1,7 @@
 setGlobals()
 rootRequire('services/config/env')
 
-const express = require('express')
-const app = express()
-const routes = rootRequire('services/routes')
+const router = rootRequire('services/router')
 
 function setGlobals() {
   const path = require('path')
@@ -15,7 +13,5 @@ function setGlobals() {
 }
 
 module.exports = {
-  app,
-  express,
-  routes
+  router
 }

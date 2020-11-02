@@ -1,12 +1,10 @@
 const checkoutSession = rootRequire('services/checkout/session')
 
-const routeName = 'session'
+exports.name = 'session'
+exports.httpMethod = 'post'
+exports.jsonPayloadParsing = true
 
-function setRoute(app, express) {
-  app.post(`/${routeName}`, express.json(), routeHandler)
-}
-
-async function routeHandler(req, res) {
+exports.action = async (req, res) => {
   try {
     const session = await checkoutSession.create(req.body.line_items, req.body.metadata)
     res.send({ sessionId: session.id })
@@ -14,8 +12,4 @@ async function routeHandler(req, res) {
     console.error(err)
     res.status(500).send('An error has occurred. Please contact the website administrator.')
   }
-}
-
-module.exports = {
-  setRoute
 }
