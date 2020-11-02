@@ -4,8 +4,7 @@ rootRequire('services/config/env')
 const router = rootRequire('services/router')
 
 function setGlobals() {
-  const path = require('path')
-  const rootPath = '/' + path.basename(path.dirname(__dirname))
+  const rootPath = process.cwd()
 
   global.rootRequire = name => require(`./${name}`)
   global.srcPath = file => `${__dirname}/${file}`
