@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `.env` file to gitignore.
 - An improved router module.
+- License to `package.json`.
 
 ### Changed
 - Update `.env.dist` file.
