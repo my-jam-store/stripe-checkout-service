@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update `.env.dist` file.
+- Update root path in bootstrap module globals function.
 
 ### Removed
 - `index.html` and `now.json` files.
