@@ -2,13 +2,12 @@ const stripe = rootRequire('services/integrations/stripe')
 const order = rootRequire('services/order')
 const HttpError = rootRequire('services/error/http')
 
-const routeName = 'order'
+exports.name = 'order'
+exports.httpMethod = 'post'
+exports.rawPayloadParsing = true
+exports.payloadParserOptions = { type: 'application/json' }
 
-function setRoute(app, express) {
-  app.post(`/${routeName}`, express.raw({ type: 'application/json' }), routeHandler)
-}
-
-async function routeHandler(req, res) {
+exports.action = async (req, res) => {
   try {
     const checkoutSession = stripe.completedCheckoutSession(req.body, req.headers)
     await order.create(checkoutSession.id)
@@ -22,8 +21,4 @@ async function routeHandler(req, res) {
     console.error(err)
     res.sendStatus(500)
   }
-}
-
-module.exports = {
-  setRoute
 }
