@@ -1,5 +1,6 @@
 const airtable = rootRequire('services/integrations/airtable')
 const checkoutSession = rootRequire('services/checkout/session')
+const shipping = rootRequire('services/checkout/shipping')
 
 async function create(checkoutSessionId) {
   if (process.env.ORDER_CREATE_ENABLED !== 'true') {
@@ -42,7 +43,7 @@ function lineItems(items) {
   items.forEach(item => {
     product = item.price.product
 
-    if (product.metadata.type === 'shipping_fee') {
+    if (shipping.isShippingProduct(product.metadata.type)) {
       return
     }
 
