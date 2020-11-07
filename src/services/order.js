@@ -1,6 +1,8 @@
 const airtable = rootRequire('services/integrations/airtable')
 const checkoutSession = rootRequire('services/checkout/session')
 const shipping = rootRequire('services/checkout/shipping')
+const order = rootRequire('models/order')
+const orderItem = rootRequire('models/order/item')
 
 async function create(checkoutSessionId) {
   if (process.env.ORDER_CREATE_ENABLED !== 'true') {
@@ -13,59 +15,26 @@ async function create(checkoutSessionId) {
   const items = lineItems(checkout.line_items.data)
   const promotionCode = await promotionCodePromise
 
-  const data = orderData(checkout.payment_intent, checkout.charges, promotionCode, checkout.phone)
-  const order = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, data)
+  const orderData = new order(checkout, promotionCode).data
+  const orderRecord = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, orderData)
 
-  await addItems(items, order.id)
-}
-
-function orderData(paymentIntent, charges, promotionCode = null, phone = null) {
-  const billing = paymentIntent.shipping || charges.billing_details
-
-  return data = {
-    payment_intent_id: paymentIntent.id,
-    customer_name: billing.name,
-    email: charges.billing_details.email,
-    coupon_code: promotionCode || '',
-    total: parseFloat((paymentIntent.amount / 100).toFixed(2)),
-    date: new Date(charges.created * 1000).toISOString(),
-    address: [billing.address.line1, billing.address.line2].filter(Boolean).join(' - '),
-    post_code: billing.address.postal_code,
-    city: billing.address.city,
-    phone_number: phone || billing.phone
-  }
+  await addItems(items, orderRecord.id)
 }
 
 function lineItems(items) {
   const lineItems = []
-  let product
 
   items.forEach(item => {
-    product = item.price.product
-
-    if (shipping.isShippingProduct(product.metadata.type)) {
-      return
+    if (!shipping.isShippingProduct(item.price.product.metadata.type)) {
+      lineItems.push({ fields: new orderItem(item).data })
     }
-
-    lineItems.push({
-      fields: {
-        name: product.name,
-        sku: product.metadata.sku,
-        image: product.images.length ? product.images[0] : '',
-        price: item.price.unit_amount / 100,
-        qty: item.quantity
-      }
-    })
   })
 
   return lineItems
 }
 
 async function addItems(items, orderId) {
-  items.forEach(item => {
-    item.fields['order_id'] = [ orderId ]
-  })
-
+  items.forEach(item => { item.fields['order_id'] = [ orderId ] })
   await airtable.createRecord(process.env.AIRTABLE_ORDER_ITEMS_VIEW, items)
 }
 
