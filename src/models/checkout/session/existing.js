@@ -9,12 +9,10 @@ const sessionExpandedData = [
 
 class ExistingSession extends CheckoutSession {
   constructor(sessionId, expandedData = sessionExpandedData) {
-    expandedData = Array.isArray(expandedData) ? expandedData : []
-
-    super(sessionId, expandedData)
+    super()
 
     this.sessionId = sessionId
-    this.expandedData = expandedData
+    this.expandedData = Array.isArray(expandedData) ? expandedData : []
   }
 
   async init() {
