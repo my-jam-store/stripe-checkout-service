@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Shipping product type check function to shipping module.
+- Order and order item models.
 
 ### Changed
 - Update checkout session models constructors.
