@@ -1,8 +1,8 @@
 const airtable = rootRequire('services/integrations/airtable')
 const checkoutSession = rootRequire('services/checkout/session')
 const shipping = rootRequire('services/checkout/shipping')
-const order = rootRequire('models/order')
-const orderItem = rootRequire('models/order/item')
+const Order = rootRequire('models/order')
+const OrderItem = rootRequire('models/order/item')
 
 async function create(checkoutSessionId) {
   if (process.env.ORDER_CREATE_ENABLED !== 'true') {
@@ -15,10 +15,10 @@ async function create(checkoutSessionId) {
   const items = lineItems(checkout.line_items.data)
   const promotionCode = await promotionCodePromise
 
-  const orderData = new order(checkout, promotionCode).data
-  const orderRecord = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, orderData)
+  const orderData = new Order(checkout, promotionCode).data
+  const completedOrder = await airtable.createRecord(process.env.AIRTABLE_ORDER_VIEW, orderData)
 
-  await addItems(items, orderRecord.id)
+  await addItems(items, completedOrder.id)
 }
 
 function lineItems(items) {
@@ -26,7 +26,7 @@ function lineItems(items) {
 
   items.forEach(item => {
     if (!shipping.isShippingProduct(item.price.product.metadata.type)) {
-      lineItems.push({ fields: new orderItem(item).data })
+      lineItems.push({ fields: new OrderItem(item).data })
     }
   })
 
