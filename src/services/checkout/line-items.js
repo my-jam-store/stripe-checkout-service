@@ -56,8 +56,8 @@ function shippingLineItem(subtotal) {
     price_data: {
       currency: process.env.CURRENCY,
       product_data: {
-        name: 'Shipping Fee',
-        metadata: { type: 'shipping_fee' }
+        name: shipping.product.name,
+        metadata: { type: shipping.product.type }
       },
       unit_amount: shipping.amount(subtotal)
     },
