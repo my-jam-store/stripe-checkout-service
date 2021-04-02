@@ -23,7 +23,9 @@ async function processedLineItems(lineItems) {
     processedItems.push(processedItem)
   }
 
-  processedItems.push(shippingLineItem(subtotal))
+  if (shipping.isEnabled()) {
+    processedItems.push(shippingLineItem(subtotal))
+  }
 
   return processedItems
 }
