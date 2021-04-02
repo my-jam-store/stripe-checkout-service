@@ -52,14 +52,18 @@ async function encryptedLineItemAmount(amount, productId) {
 }
 
 function shippingLineItem(subtotal) {
+  return feeLineItem(shipping.feeProduct, shipping.amount(subtotal))
+}
+
+function feeLineItem(feeProduct, amount) {
   return {
     price_data: {
       currency: process.env.CURRENCY,
       product_data: {
-        name: shipping.feeProduct.name,
-        metadata: { type: shipping.feeProduct.type }
+        name: feeProduct.name,
+        metadata: { type: feeProduct.type }
       },
-      unit_amount: shipping.amount(subtotal)
+      unit_amount: amount
     },
     quantity: 1
   }
