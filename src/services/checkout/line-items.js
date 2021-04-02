@@ -23,7 +23,9 @@ async function processedLineItems(lineItems) {
     processedItems.push(processedItem)
   }
 
-  processedItems.push(shippingLineItem(subtotal))
+  if (shipping.isEnabled()) {
+    processedItems.push(shippingLineItem(subtotal))
+  }
 
   return processedItems
 }
@@ -52,14 +54,18 @@ async function encryptedLineItemAmount(amount, productId) {
 }
 
 function shippingLineItem(subtotal) {
+  return feeLineItem(shipping.feeProduct, shipping.amount(subtotal))
+}
+
+function feeLineItem(feeProduct, amount) {
   return {
     price_data: {
       currency: process.env.CURRENCY,
       product_data: {
-        name: shipping.product.name,
-        metadata: { type: shipping.product.type }
+        name: feeProduct.name,
+        metadata: { type: feeProduct.type }
       },
-      unit_amount: shipping.amount(subtotal)
+      unit_amount: amount
     },
     quantity: 1
   }

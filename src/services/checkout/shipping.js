@@ -1,10 +1,11 @@
-const product = {
-  type: 'shipping_fee',
-  name: 'Shipping Fee'
-}
+const ShippingProduct = rootRequire('models/checkout/line-item/fee/shipping')
 
 function amount(subtotal) {
   return !isFreeShipping(subtotal) ? process.env.SHIPPING_FEE * 100 : 0
+}
+
+function isEnabled() {
+  return process.env.SHIPPING_ENABLED === 'true' && process.env.SHIPPING_FEE
 }
 
 function isShippingProduct(productType) {
@@ -17,6 +18,7 @@ function isFreeShipping(subtotal) {
 
 module.exports = {
   amount,
+  isEnabled,
   isShippingProduct,
-  product
+  feeProduct: ShippingProduct
 }
