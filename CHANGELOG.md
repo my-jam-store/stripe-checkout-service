@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Shipping product details to shipping module.
+- Fee line item feature.
+- Shipping enable/disable feature.
 
 ### Changed
 - Rename some constants in order module.
+- Improve shipping fee code.
 
 ## [0.7.0] - 2020-11-08
 ### Added
