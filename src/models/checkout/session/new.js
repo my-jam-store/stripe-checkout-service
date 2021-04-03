@@ -11,7 +11,7 @@ class NewSession extends CheckoutSession {
   }
 
   async init() {
-    const items = await lineItems.processedLineItems(this.lineItemsData)
+    const items = await lineItems.processedLineItems(this.lineItemsData, this.metadata.tip_amount)
     const session = await stripe.createCheckoutSession(items, this.metadata)
 
     this.assignSession(session)

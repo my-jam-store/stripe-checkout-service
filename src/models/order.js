@@ -38,6 +38,14 @@ class Order extends DataObject {
     this.coupon_code = couponCode || ''
   }
 
+  get tipAmount() {
+    return this.tip
+  }
+
+  set tipAmount(tipAmount) {
+    this.tip = tipAmount || ''
+  }
+
   get total() {
     return this._total
   }
@@ -93,6 +101,7 @@ class Order extends DataObject {
     this.customerName = billing.name
     this.email = checkout.charges.billing_details.email
     this.couponCode = promotionCode
+    this.tipAmount = checkout.tipAmount
     this.total = checkout.payment_intent.amount
     this.date = checkout.charges.created
     this.address = [billing.address.line1, billing.address.line2]

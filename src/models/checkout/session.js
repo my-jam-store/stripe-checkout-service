@@ -9,6 +9,10 @@ class CheckoutSession {
     return this.metadata.phone
   }
 
+  get tipAmount() {
+    return this.metadata.tip_amount
+  }
+
   get promotionCodeId() {
     return this.total_details.breakdown.discounts.length
       ? this.total_details.breakdown.discounts[0].discount.promotion_code
