@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shipping product details to shipping module.
 - Fee line item feature.
 - Shipping enable/disable feature.
+- Tip amount feature.
 
 ### Changed
 - Rename some constants in order module.
