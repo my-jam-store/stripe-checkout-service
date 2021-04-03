@@ -9,7 +9,7 @@ function isEnabled() {
 }
 
 function isShippingProduct(productType) {
-  return productType === this.product.type
+  return productType === this.feeProduct.type
 }
 
 function isFreeShipping(subtotal) {
