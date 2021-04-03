@@ -1,7 +1,8 @@
 const shipping = rootRequire('services/checkout/shipping')
+const tip = rootRequire('services/checkout/tip')
 const crypto = rootRequire('services/crypto')
 
-async function processedLineItems(lineItems) {
+async function processedLineItems(lineItems, tipAmount = null) {
   const processedItems = []
   let processedItem
   let subtotal = 0
@@ -25,6 +26,10 @@ async function processedLineItems(lineItems) {
 
   if (shipping.isEnabled()) {
     processedItems.push(shippingLineItem(subtotal))
+  }
+
+  if (tip.isEnabled() && tipAmount) {
+    processedItems.push(tipLineItem(tipAmount))
   }
 
   return processedItems
@@ -55,6 +60,10 @@ async function encryptedLineItemAmount(amount, productId) {
 
 function shippingLineItem(subtotal) {
   return feeLineItem(shipping.feeProduct, shipping.amount(subtotal))
+}
+
+function tipLineItem(amount) {
+  return feeLineItem(tip.product, tip.amount(amount))
 }
 
 function feeLineItem(feeProduct, amount) {
