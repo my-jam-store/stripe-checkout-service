@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve shipping fee code.
 
 ### Fixed
-- Line items subtotal calculation in line items module processedLineItems function.
+- Line items subtotal calculation in line items module `processedLineItems` function.
 
 ## [0.7.0] - 2020-11-08
 ### Added
