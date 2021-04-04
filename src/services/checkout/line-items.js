@@ -63,7 +63,7 @@ function shippingLineItem(subtotal) {
 }
 
 function tipLineItem(amount) {
-  return feeLineItem(tip.product, tip.amount(amount))
+  return feeLineItem(tip.feeProduct, tip.amount(amount))
 }
 
 function feeLineItem(feeProduct, amount) {
