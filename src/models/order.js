@@ -43,7 +43,7 @@ class Order extends DataObject {
   }
 
   set tipAmount(tipAmount) {
-    this.tip = tipAmount || ''
+    this.tip = parseFloat(tipAmount) || null
   }
 
   get total() {
