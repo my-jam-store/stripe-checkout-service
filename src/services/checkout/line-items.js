@@ -16,7 +16,7 @@ async function processedLineItems(lineItems, tipAmount = null) {
       processedItem.product_id
     )
 
-    subtotal += processedItem.price_data.unit_amount
+    subtotal += processedItem.price_data.unit_amount * processedItem.quantity
     processedItem.price_data.unit_amount *= 100
 
     delete processedItem.product_id
