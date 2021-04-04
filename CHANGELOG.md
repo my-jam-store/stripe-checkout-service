@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename some constants in order module.
 - Improve shipping fee code.
 
+### Fixed
+- Line items subtotal calculation in line items module `processedLineItems` function.
+
 ## [0.7.0] - 2020-11-08
 ### Added
 - Shipping product type check function to shipping module.
