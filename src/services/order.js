@@ -1,6 +1,5 @@
 const airtable = rootRequire('services/integrations/airtable')
 const checkoutSession = rootRequire('services/checkout/session')
-const shipping = rootRequire('services/checkout/shipping')
 const tip = rootRequire('services/checkout/tip')
 const Order = rootRequire('models/order')
 const OrderItem = rootRequire('models/order/item')
@@ -26,8 +25,7 @@ function lineItems(items) {
   const lineItems = []
 
   items.forEach(item => {
-    if (!shipping.isShippingProduct(item.price.product.metadata.type)
-      && !tip.isTipProduct(item.price.product.metadata.type)) {
+    if (!tip.isTipProduct(item.price.product.metadata.type)) {
       lineItems.push({ fields: new OrderItem(item).data })
     }
   })
