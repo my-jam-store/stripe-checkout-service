@@ -1,6 +1,7 @@
 const CheckoutSession = rootRequire('models/checkout/session')
 const stripe = rootRequire('services/integrations/stripe')
 const lineItems = rootRequire('services/checkout/line-items')
+const shipping = rootRequire('services/checkout/shipping')
 
 class NewSession extends CheckoutSession {
   constructor(lineItemsData, metadata) {
@@ -11,8 +12,9 @@ class NewSession extends CheckoutSession {
   }
 
   async init() {
+    const shippingRateIds = await shipping.shippingRateIds(this.lineItemsData)
     const items = await lineItems.processedLineItems(this.lineItemsData, this.metadata.tip_amount)
-    const session = await stripe.createCheckoutSession(items, this.metadata)
+    const session = await stripe.createCheckoutSession(items, this.metadata, shippingRateIds)
 
     this.assignSession(session)
 

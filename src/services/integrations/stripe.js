@@ -3,8 +3,8 @@ const HttpError = rootRequire('services/error/http')
 
 const webhookSignatureHeader = 'stripe-signature'
 
-async function createCheckoutSession(lineItems, metadata = {}) {
-  const payload = checkoutSessionCreationPayload(lineItems, metadata)
+async function createCheckoutSession(lineItems, metadata = {}, shippingRates = []) {
+  const payload = checkoutSessionCreationPayload(lineItems, metadata, shippingRates)
   return await stripe.checkout.sessions.create(payload)
 }
 
@@ -54,8 +54,8 @@ function webhookEventData(event) {
   return event.data.object
 }
 
-function checkoutSessionCreationPayload(lineItems, metadata = {}) {
-  return {
+function checkoutSessionCreationPayload(lineItems, metadata = {}, shippingRates = []) {
+  const payload = {
     mode: process.env.CHECKOUT_SESSION_MODE || 'payment',
     payment_method_types: process.env.PAYMENT_METHOD_TYPES.split(','),
     line_items: lineItems,
@@ -70,6 +70,12 @@ function checkoutSessionCreationPayload(lineItems, metadata = {}) {
     success_url: `${process.env.DOMAIN}/${process.env.SUCCESS_URL_PATH}`,
     cancel_url: `${process.env.DOMAIN}/${process.env.CANCEL_URL_PATH}`
   }
+
+  if (payload.mode === 'payment') {
+    payload.shipping_rates = shippingRates
+  }
+
+  return payload
 }
 
 function stripeOptions() {

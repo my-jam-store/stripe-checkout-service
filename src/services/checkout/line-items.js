@@ -28,6 +28,24 @@ async function processedLineItems(lineItems, tipAmount = null) {
   return processedItems
 }
 
+async function calculateSubtotal(lineItems) {
+  let subtotal = 0
+  let item
+
+  for (const lineItem in lineItems) {
+    item = lineItems[lineItem]
+
+    item.price_data.unit_amount = await lineItemAmount(
+      item.price_data.unit_amount,
+      item.product_id
+    )
+
+    subtotal += item.price_data.unit_amount * item.quantity
+  }
+
+  return subtotal
+}
+
 async function lineItemAmount(amount, productId = null) {
   switch (process.env.AMOUNT_MANIPULATION_PROTECTION_TYPE) {
     case 'encryption':
@@ -70,5 +88,6 @@ function feeLineItem(feeProduct, amount) {
 }
 
 module.exports = {
-  processedLineItems
+  processedLineItems,
+  calculateSubtotal
 }
