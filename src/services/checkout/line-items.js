@@ -1,11 +1,9 @@
-const shipping = rootRequire('services/checkout/shipping')
 const tip = rootRequire('services/checkout/tip')
 const crypto = rootRequire('services/crypto')
 
 async function processedLineItems(lineItems, tipAmount = null) {
   const processedItems = []
   let processedItem
-  let subtotal = 0
 
   for (const lineItem in lineItems) {
     processedItem = lineItems[lineItem]
@@ -16,7 +14,6 @@ async function processedLineItems(lineItems, tipAmount = null) {
       processedItem.product_id
     )
 
-    subtotal += processedItem.price_data.unit_amount * processedItem.quantity
     processedItem.price_data.unit_amount *= 100
 
     delete processedItem.product_id
@@ -24,15 +21,29 @@ async function processedLineItems(lineItems, tipAmount = null) {
     processedItems.push(processedItem)
   }
 
-  if (shipping.isEnabled()) {
-    processedItems.push(shippingLineItem(subtotal))
-  }
-
   if (tip.isEnabled() && tipAmount) {
     processedItems.push(tipLineItem(tipAmount))
   }
 
   return processedItems
+}
+
+async function calculateSubtotal(lineItems) {
+  let subtotal = 0
+  let item
+
+  for (const lineItem in lineItems) {
+    item = lineItems[lineItem]
+
+    item.price_data.unit_amount = await lineItemAmount(
+      item.price_data.unit_amount,
+      item.product_id
+    )
+
+    subtotal += item.price_data.unit_amount * item.quantity
+  }
+
+  return subtotal
 }
 
 async function lineItemAmount(amount, productId = null) {
@@ -58,10 +69,6 @@ async function encryptedLineItemAmount(amount, productId) {
   return amount['amount']
 }
 
-function shippingLineItem(subtotal) {
-  return feeLineItem(shipping.feeProduct, shipping.amount(subtotal))
-}
-
 function tipLineItem(amount) {
   return feeLineItem(tip.feeProduct, tip.amount(amount))
 }
@@ -81,5 +88,6 @@ function feeLineItem(feeProduct, amount) {
 }
 
 module.exports = {
-  processedLineItems
+  processedLineItems,
+  calculateSubtotal
 }

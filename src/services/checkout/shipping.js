@@ -1,15 +1,20 @@
-const ShippingProduct = rootRequire('models/checkout/line-item/fee/shipping')
+const lineItems = rootRequire('services/checkout/line-items')
 
-function amount(subtotal) {
-  return !isFreeShipping(subtotal) ? process.env.SHIPPING_FEE * 100 : 0
+async function shippingRateIds(lineItemsData) {
+  if (!isEnabled()) {
+    return []
+  }
+
+  const subtotal = await lineItems.calculateSubtotal(lineItemsData)
+  const shippingId = !isFreeShipping(subtotal)
+    ? process.env.STRIPE_SHIPPING_FEE_ID : process.env.STRIPE_FREE_SHIPPING_ID
+
+  return [shippingId]
 }
 
 function isEnabled() {
-  return process.env.SHIPPING_ENABLED === 'true' && process.env.SHIPPING_FEE
-}
-
-function isShippingProduct(productType) {
-  return productType === this.feeProduct.type
+  return process.env.SHIPPING_ENABLED === 'true'
+    && (process.env.STRIPE_SHIPPING_FEE_ID || process.env.STRIPE_FREE_SHIPPING_ID)
 }
 
 function isFreeShipping(subtotal) {
@@ -17,8 +22,5 @@ function isFreeShipping(subtotal) {
 }
 
 module.exports = {
-  amount,
-  isEnabled,
-  isShippingProduct,
-  feeProduct: ShippingProduct
+  shippingRateIds
 }
