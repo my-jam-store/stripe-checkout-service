@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Stripe shipping feature.
 
+### Changed
+- Bump `ini` version number to `1.3.8`.
+
 ### Removed
 - Shipping fee line item feature.
 
