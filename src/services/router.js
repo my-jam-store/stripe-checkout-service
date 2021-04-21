@@ -17,11 +17,11 @@ function init() {
 }
 
 function setRoutes() {
-  fs.readdirSync(srcPath('services/routes')).forEach(route => { setRoute(route) })
+  fs.readdirSync(srcPath('routes')).forEach(route => { setRoute(route) })
 }
 
 function setRoute(routeName) {
-  const route = rootRequire(`services/routes/${routeName}`)
+  const route = rootRequire(`routes/${routeName}`)
   router[route.httpMethod](`/${route.name}`, routeCallbacks(route), route.action)
 }
 
