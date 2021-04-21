@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Bump `ini` version number to `1.3.8`.
+- Route files location.
 
 ### Removed
 - Shipping fee line item feature.
